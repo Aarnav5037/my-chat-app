@@ -23,28 +23,25 @@ export default function ChatApp() {
     const text = messageText || input;
     if (!text.trim()) return;
 
-    const userMessage = { sender: "You", text, time: new Date() };
+    const userMessage = { sender: "YOU", text, time: new Date() };
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
     setLoading(true);
 
     try {
-      const res = await fetch(
-        "https://chat-backend-five-amber.vercel.app/chat",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: text }),
-        }
-      );
+      const res = await fetch("https://chat-backend-five-amber.vercel.app/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: text }),
+      });
       const data = await res.json();
 
       const fullText = data.reply;
       let currentText = "";
-      setMessages((prev) => [...prev, userMessage, { sender: "AI", text: "", time: new Date() }]);
+      setMessages((prev) => [...prev, { sender: "AI", text: "", time: new Date() }]);
 
       for (let i = 0; i < fullText.length; i++) {
-        await new Promise((r) => setTimeout(r, 25));
+        await new Promise((r) => setTimeout(r, 20));
         currentText += fullText[i];
         setMessages((prev) =>
           prev.map((msg, idx) =>
@@ -65,31 +62,29 @@ export default function ChatApp() {
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-  
-    // Just display the uploaded file name in chat
     setMessages((prev) => [
       ...prev,
-      { sender: "You", text: `📁 Uploaded file: ${file.name}`, time: new Date() },
+      { sender: "YOU", text: `📁 Uploaded file: ${file.name}`, time: new Date() },
     ]);
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-start p-6 font-sans">
-      <h1 className="text-3xl font-bold text-indigo-600 mb-2 text-center">
-        💬 My Smart Chat Assistant
+    <div className="min-h-screen bg-gradient-to-br from-indigo-100 to-purple-200 flex flex-col items-center justify-center p-6 font-sans">
+      <h1 className="text-4xl font-bold text-indigo-700 mb-2 text-center">
+        💾 Database Optimization Recommender System
       </h1>
-      <p className="text-gray-700 max-w-md text-center mb-6">
-        Ask questions, upload files, or click a suggested prompt to see AI responses instantly!
+      <p className="text-gray-700 max-w-lg text-center mb-6">
+        Ask questions, upload files, or click a suggested prompt to see AI recommendations instantly!
       </p>
 
-      <div className="w-full max-w-lg bg-white shadow-xl rounded-2xl flex flex-col p-6">
+      <div className="w-full max-w-xl bg-white shadow-2xl rounded-2xl flex flex-col p-6">
         {/* Quick Suggestions */}
-        <div className="flex flex-wrap gap-2 mb-4">
+        <div className="flex flex-wrap justify-center gap-2 mb-4">
           {quickSuggestions.map((q, idx) => (
             <button
               key={idx}
               onClick={() => sendMessage(null, q)}
-              className="bg-indigo-100 hover:bg-indigo-200 text-indigo-800 px-3 py-1 rounded-full text-sm transition"
+              className="bg-indigo-200 hover:bg-indigo-300 text-indigo-900 px-3 py-1 rounded-full text-sm transition"
             >
               {q}
             </button>
@@ -99,31 +94,25 @@ export default function ChatApp() {
         {/* Chat messages */}
         <div className="flex-1 overflow-y-auto space-y-3 mb-4 max-h-[400px]">
           {messages.map((msg, idx) => (
-            <div
-              key={idx}
-              className={`flex ${msg.sender === "You" ? "justify-end" : "justify-start"}`}
-            >
-              <div
-                className={`relative max-w-[70%] px-4 py-2 rounded-xl break-words
-                  ${msg.sender === "You"
-                    ? "bg-indigo-500 text-white rounded-br-none"
-                    : "bg-green-200 text-gray-900 rounded-bl-none"
-                }`}
-              >
-                <span className="block text-xs opacity-70 mb-1">{msg.sender}</span>
-                {msg.text}
-                <span className="block text-[10px] mt-1 opacity-50 text-right">
-                  {msg.time.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+            <div key={idx} className={`flex ${msg.sender === "YOU" ? "justify-end" : "justify-start"}`}>
+              <div className="flex flex-col max-w-[75%]">
+                <span className={`font-semibold mb-1 ${msg.sender === "YOU" ? "text-indigo-600 text-right" : "text-green-600 text-left"}`}>
+                  {msg.sender}
                 </span>
+                <div
+                  className={`px-4 py-2 rounded-2xl break-words shadow-sm ${msg.sender === "YOU" ? "bg-indigo-500 text-white rounded-br-none" : "bg-green-200 text-gray-900 rounded-bl-none"}`}
+                >
+                  {msg.text}
+                </div>
               </div>
             </div>
           ))}
-          {loading && <p className="text-gray-500 italic text-sm">AI is typing... 🤖</p>}
+          {loading && <p className="text-gray-500 italic text-sm text-center">AI is typing... 🤖</p>}
           <div ref={chatEndRef} />
         </div>
 
         {/* Input */}
-        <form onSubmit={sendMessage} className="flex gap-2 mb-2">
+        <form onSubmit={sendMessage} className="flex gap-2 mb-3">
           <input
             type="text"
             value={input}
@@ -133,14 +122,14 @@ export default function ChatApp() {
           />
           <button
             type="submit"
-            className="bg-indigo-500 text-white px-4 py-2 rounded-xl hover:bg-indigo-600 transition-all"
+            className="bg-indigo-600 text-white px-4 py-2 rounded-xl hover:bg-indigo-700 transition-all"
           >
             Send
           </button>
         </form>
 
-        {/* File Upload */}
-        <div className="flex gap-2 items-center mb-3">
+        {/* File Upload & Clear Chat */}
+        <div className="flex gap-4 items-center justify-center mb-1">
           <label className="bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-2 rounded-xl cursor-pointer transition">
             📁 Upload File
             <input type="file" className="hidden" onChange={handleFileUpload} />
@@ -150,7 +139,7 @@ export default function ChatApp() {
           </button>
         </div>
 
-        <p className="text-gray-400 text-xs mt-1">Made with ❤️ using React & Vercel</p>
+        <p className="text-gray-400 text-xs mt-2 text-center">Made with ❤️ for Hackathon Presentation</p>
       </div>
     </div>
   );
