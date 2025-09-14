@@ -16,7 +16,7 @@ export default function ChatApp() {
 
     try {
       // Replace URL with your backend endpoint
-      const response = await fetch("https://b1529cc7ab66.ngrok-free.app", {
+      const response = await fetch("https://chat-backend-five-amber.vercel.app/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: input }),
