@@ -1,4 +1,5 @@
 📊 Database Optimization Recommender System
+
 🚀 Overview
 
 This project is a Database Optimization Recommender System built for a hackathon. It intelligently analyzes query workloads, execution plans, and database metadata to provide specific, actionable optimization recommendations. Unlike generic tips from a standard LLM, our system builds context across multiple queries and uses a combination of rule-based heuristics and an LLM (Mistral 7B) to tailor recommendations for your actual workload.
@@ -6,6 +7,7 @@ This project is a Database Optimization Recommender System built for a hackathon
 Additionally, the project features an interactive chatbot interface where users can explore recommendations in real time. The frontend is built with React + Vite + TailwindCSS, while the backend integrates query analysis, heuristic detection, and LLM inference.
 
 ✨ Key Features
+
 🧠 Smart Recommendation Engine
 
 Workload Analysis: Extracts information from multiple queries and their execution plans.
