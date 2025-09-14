@@ -103,10 +103,15 @@ export default function ChatApp() {
                   {msg.sender}
                 </span>
                 <div
-                  className={`px-4 py-2 rounded-2xl break-words shadow-sm ${msg.sender === "YOU" ? "bg-indigo-500 text-white rounded-br-none" : "bg-green-200 text-gray-900 rounded-bl-none"}`}
+                  className={`px-4 py-2 rounded-2xl break-words whitespace-pre-wrap shadow-sm ${
+                    msg.sender === "YOU"
+                      ? "bg-indigo-500 text-white rounded-br-none"
+                      : "bg-green-200 text-gray-900 rounded-bl-none"
+                  }`}
                 >
                   {msg.text}
                 </div>
+
               </div>
             </div>
           ))}
