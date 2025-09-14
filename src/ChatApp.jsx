@@ -8,8 +8,11 @@ export default function ChatApp() {
 
   const quickSuggestions = [
     "Hello!",
-    "Give me optimization recommendations",
-    "Explain reinforcement learning simply",
+    "Give me optimization recommendations based on the above data",
+    "How can I reduce query execution time for a table with frequent writes?",
+    "What are the best practices for indexing a large MySQL table",
+    "Should I use denormalization to improve performance?",
+    "How can I monitor and tune database performance over time?"
   ];
 
   useEffect(() => {
